@@ -1,31 +1,53 @@
 import asyncHandler from 'express-async-handler';
-
+import Goal from '../models/goalModel.js';
 // @desc Get Goals
 // @route GET '/api/goals'
 // @access Public
 export const getGoals = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'Getting Goals...' });
+  const goals = await Goal.find();
+  res.status(200).json(goals);
 });
 
 // @desc Create Goal
 // @route POST '/api/goals'
 // @access Private
 export const createGoal = asyncHandler(async (req, res) => {
-  if (!req.body.text) throw new Error('Please enter some text.');
+  const { text } = req.body;
+  if (!text) throw new Error('Please enter some text.');
 
-  res.status(201).json({ message: 'Creating Goal...' });
+  const goal = await Goal.create({ text });
+
+  res.status(201).json(goal);
 });
 
 // @desc Update Goal
 // @route PUT '/api/goals/:id'
 // @access Private
 export const updateGoal = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Updating Goal: ${req.params.id}` });
+  const { id } = req.params;
+  const goal = await Goal.findById(id);
+
+  if (!goal) {
+    res.status(400);
+    throw new Error('Goal not found.');
+  }
+
+  const updatedGoal = await Goal.findByIdAndUpdate(id, req.body, { new: true });
+
+  res.status(200).json(updatedGoal);
 });
 
 // @desc Delete Goal
 // @route DELETE '/api/goals/:id'
 // @access Private
 export const deleteGoal = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Deleting Goal: ${req.params.id}` });
+  const { id } = req.params;
+  const goal = await Goal.findById(id);
+  if (!goal) {
+    res.status(400);
+    throw new Error('Goal not found.');
+  }
+
+  await goal.remove();
+  res.status(200).json({ id });
 });
