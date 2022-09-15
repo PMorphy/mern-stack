@@ -1,0 +1,30 @@
+{
+  "name": "mern-stack",
+  "version": "1.0.0",
+  "description": "MERN stack tutorial by Brad Traversy",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PMorphy/mern-stack.git"
+  },
+  "author": "A. Hawkins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PMorphy/mern-stack/issues"
+  },
+  "homepage": "https://github.com/PMorphy/mern-stack#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
