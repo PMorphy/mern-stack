@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 
 // Route Imports
 import goalRoutes from './routes/goalRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Middleware
 import { errorHandler } from './middleware/errorMiddleware.js';
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use('/api/goals', goalRoutes);
+app.use('/api/users', userRoutes);
 
 // After Route Middleware
 app.use(errorHandler);
