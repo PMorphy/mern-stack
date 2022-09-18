@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { register, reset } from '../../features/auth/authSlice';
 import {
   Typography,
   Container,
@@ -9,6 +13,7 @@ import {
   Button
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Spinner from '../../components/spinner/Spinner';
 
 import useStyles from './styles';
 
@@ -22,6 +27,15 @@ const initialState = {
 
 const Register = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  const [formData, setFormData] = useState(initialState);
+  const { firstName, lastName, email, password, confirmPassword } = formData;
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -30,9 +44,30 @@ const Register = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords don't match");
+    } else {
+      const userData = {
+        name: `${firstName} ${lastName}`,
+        email,
+        password
+      };
+
+      dispatch(register(userData));
+    }
   };
 
-  const [formData, setFormData] = useState(initialState);
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (user || isSuccess) navigate('/');
+
+    dispatch(reset());
+  }, [user, user?.token, isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) return <Spinner />;
+
   return (
     <Container component='main' maxWidth='xs'>
       <Paper className={classes.paper} elevation={3}>
@@ -52,12 +87,14 @@ const Register = () => {
                   onChange={handleChange}
                   value={formData.firstName}
                   autoFocus
+                  required
                 />
                 <TextField
                   name='lastName'
                   label='Last Name'
                   onChange={handleChange}
                   value={formData.lastName}
+                  required
                 />
               </div>
 
@@ -67,6 +104,7 @@ const Register = () => {
                 onChange={handleChange}
                 type='email'
                 value={formData.email}
+                required
                 fullWidth
               />
               <TextField
@@ -75,14 +113,16 @@ const Register = () => {
                 onChange={handleChange}
                 type='password'
                 value={formData.password}
+                required
                 fullWidth
               />
               <TextField
-                name='confirm-password'
+                name='confirmPassword'
                 label='Confirm Password'
                 onChange={handleChange}
                 type='password'
                 value={formData.confirmPassword}
+                required
                 fullWidth
               />
             </div>
