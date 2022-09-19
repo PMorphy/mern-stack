@@ -6,16 +6,18 @@ export default makeStyles((theme) => ({
       margin: theme.spacing(1)
     }
   },
-  [theme.breakpoints.down('sm')]: {
-    mainContainer: {
-      flexDirection: 'column-reverse'
-    }
-  },
   mainContainer: {
     borderRadius: 15,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start'
+  },
+  [theme.breakpoints.down('sm')]: {
+    mainContainer: {
+      flexDirection: 'column-reverse',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
   }
 }));

@@ -13,9 +13,12 @@ export default makeStyles((theme) => ({
       margin: theme.spacing(1)
     }
   },
+  header: {
+    color: 'rgba(10,203,125, 1)'
+  },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(1)
   },
   inputs: {
     margin: '1rem',

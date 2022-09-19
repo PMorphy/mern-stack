@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
     padding: '10px 50px'
   },
   heading: {
-    color: 'rgba(60,213,155, 1)',
+    color: 'rgba(10,203,125, 1)',
     textDecoration: 'none'
   },
   image: {
@@ -50,7 +50,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     gap: '10px',
     justifyContent: 'space-between',
-    color: 'rgba(60, 213, 155, 1)',
+    color: 'rgba(10,203,125, 1)',
     fontWeight: '500',
     outline: 'none',
     border: 'none',
@@ -65,5 +65,22 @@ export default makeStyles((theme) => ({
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500]
+  },
+  [theme.breakpoints.down('sm')]: {
+    heading: {
+      fontSize: '48px'
+    },
+    appBar: {
+      padding: '10px 30px'
+    }
+  },
+
+  [theme.breakpoints.down('xs')]: {
+    heading: {
+      fontSize: '24px'
+    },
+    appBar: {
+      padding: '10px 20px'
+    }
   }
 }));
