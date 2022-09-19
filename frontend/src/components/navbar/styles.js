@@ -43,6 +43,21 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     gap: '5px'
   },
+  button: {
+    padding: '0.5rem',
+    fontSize: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    justifyContent: 'space-between',
+    color: 'rgba(60, 213, 155, 1)',
+    fontWeight: '500',
+    outline: 'none',
+    border: 'none',
+    backgroundColor: 'inherit',
+    cursor: 'pointer',
+    fontFamily: 'Roboto'
+  },
   brandContainer: {
     display: 'flex',
     alignItems: 'center'

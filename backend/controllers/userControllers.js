@@ -53,21 +53,19 @@ export const registerUser = asyncHandler(async (req, res) => {
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Get User Info and Authenticate
+  // Check for user email
   const user = await User.findOne({ email });
-  const isAuthenticated = await bcrypt.compare(password, user.password);
 
-  // Return Authenticated User with a jwt
-  if (user && isAuthenticated) {
+  if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
       _id: user.id,
-      email: user.email,
       name: user.name,
-      token: generateToken(user._id) // Give a jwt
+      email: user.email,
+      token: generateToken(user._id)
     });
   } else {
     res.status(400);
-    throw new Error('Invalid Credentials.');
+    throw new Error('Invalid credentials');
   }
 });
 
@@ -75,13 +73,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 // @route POST '/api/users/me'
 // @access Private
 export const getMe = asyncHandler(async (req, res) => {
-  const { _id, name, email } = await User.findById(req.user.id);
-
-  res.status(200).json({
-    id: _id,
-    name,
-    email
-  });
+  res.status(200).json(req.user);
 });
 
 const generateToken = (id) => {

@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { login, reset } from '../../features/auth/authSlice';
 import {
   Typography,
   Container,
@@ -10,6 +14,7 @@ import {
 } from '@material-ui/core';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Spinner from '../../components/spinner/Spinner';
 
 import useStyles from './styles';
 
@@ -17,8 +22,17 @@ const initialState = {
   email: '',
   password: ''
 };
+
 const Login = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  const [formData, setFormData] = useState(initialState);
+  const { email, password } = formData;
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -27,9 +41,26 @@ const Login = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const userData = {
+      email,
+      password
+    };
+
+    dispatch(login(userData));
   };
 
-  const [formData, setFormData] = useState(initialState);
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (user || isSuccess) navigate('/');
+
+    dispatch(reset());
+  }, [user, user?.token, isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) return <Spinner />;
+
   return (
     <Container component='main' maxWidth='xs'>
       <Paper className={classes.paper} elevation={3}>
@@ -46,7 +77,7 @@ const Login = () => {
                 name='email'
                 label='Email Address'
                 onChange={handleChange}
-                value={formData.email}
+                value={email}
                 type='email'
                 fullWidth
                 autoFocus
@@ -55,7 +86,7 @@ const Login = () => {
                 name='password'
                 label='Password'
                 onChange={handleChange}
-                value={formData.password}
+                value={password}
                 type='password'
                 fullWidth
               />

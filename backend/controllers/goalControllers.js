@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler';
 import { Goal } from '../models/goalModel.js';
-import { User } from '../models/userModel.js';
 // @desc Get Goals
 // @route GET '/api/goals'
 // @access Public
@@ -29,7 +28,7 @@ export const updateGoal = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const goal = await Goal.findById(id);
-  const user = await User.findById(req.user.id);
+  const user = req.user;
 
   if (!goal) {
     res.status(400);
@@ -58,7 +57,7 @@ export const deleteGoal = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const goal = await Goal.findById(id);
-  const user = await User.findById(req.user.id);
+  const user = req.user;
 
   if (!goal) {
     res.status(400);
